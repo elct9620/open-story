@@ -2,6 +2,8 @@
 
 require 'bundler/setup'
 require 'dry/system'
+require 'sorbet-runtime'
 
 require_relative 'core/openstory'
 require_relative 'core/application'
+require_relative 'core/types'

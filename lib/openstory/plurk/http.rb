@@ -3,18 +3,20 @@
 require 'json'
 
 require_relative 'https/channel'
+require_relative 'https/response'
 
 module OpenStory
   module Plurk
     # HTTP client
     class HTTP
       include HTTPS::Channel
+      include HTTPS::Response
 
       def initialize(oauth)
         @oauth = oauth
       end
 
-      def get(path, params: {})
+      def get(path, **params)
         uri = URI(format(ENDPOINT, path:))
         execute @oauth.build(:get, uri, params:)
       end

@@ -33,14 +33,15 @@ module OpenStory
       end
 
       def build(method, uri, params: {})
-        params = params.merge(self.params)
+        params = self.params.merge(params)
         signature = sign('GET', uri.to_s, params)
         SUPPORTED_METHODS[method]
           .new(URI("#{uri}?#{URI.encode_www_form(params.merge(oauth_signature: signature))}"))
       end
 
       def sign(method, url, params)
-        BuildBase[method, url, params] >>
+        params.sort.to_h >>
+          BuildBase[method, url] >>
           HMACDigest[@secret, @token] >>
           EncodeWithBase64
       end
