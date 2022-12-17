@@ -1,0 +1,15 @@
+require:
+  - rubocop-performance
+  - rubocop-rspec
+
+inherit_mode:
+  merge:
+    - Exclude
+
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.1.3
+  DisplayCopNames: true
+  SuggestExtensions: false
+  Exclude:
+    - bin/tapioca

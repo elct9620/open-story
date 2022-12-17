@@ -1,0 +1,37 @@
+include:
+  - remote: https://github.com/elct9620/ruby-gitlab-ci/raw/main/ruby.yml
+  - remote: https://github.com/elct9620/ruby-gitlab-ci/raw/main/swarm.yml
+  - remote: https://github.com/elct9620/ruby-gitlab-ci/raw/main/sentry.yml
+
+variables:
+  RUBY_VERSION: 3.1.3
+  SORBET_ENABLED: 'yes'
+  # Test
+  RSPEC_JUNIT_REPORT: 'yes'
+
+bundler-audit:
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+    - if: $CI_PIPELINE_SOURCE == 'schedule'
+
+bundler-leak:
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+    - if: $CI_PIPELINE_SOURCE == 'schedule'
+
+rubocop:
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_MERGE_REQUEST_ID
+
+docker:
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      variables:
+        LATEST_IMAGE: 'yes'
+    - if: $CI_COMMIT_TAG
+
+trivy:
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == 'schedule'
