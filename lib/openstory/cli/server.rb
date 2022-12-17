@@ -6,8 +6,12 @@ module OpenStory
     class Server < Dry::CLI::Command
       desc 'start the server'
 
-      def call(*)
-        puts 'server is started...'
+      argument :observer, default: 'plurk', desc: 'The observer to serve'
+
+      def call(observer:)
+        class_name = OpenStory.autoloader.inflector.camelize("#{observer}_observer", nil)
+        observer = Kernel.const_get(class_name).new
+        observer.start
       end
     end
   end
