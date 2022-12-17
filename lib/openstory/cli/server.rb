@@ -9,6 +9,8 @@ module OpenStory
       argument :observer, default: 'plurk', desc: 'The observer to serve'
 
       def call(observer:)
+        $stdout.sync = true
+
         OpenStory.logger.add_backend(stream: $stdout)
         OpenStory.logger.info('Starting server...')
         class_name = OpenStory.autoloader.inflector.camelize("#{observer}_observer", nil)
