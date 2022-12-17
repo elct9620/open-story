@@ -16,6 +16,8 @@
 #
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
+$LOAD_PATH.unshift("#{File.dirname(__dir__)}/lib")
+
 if ENV.fetch('COVERAGE', false) || ENV.fetch('CI', false)
   require 'simplecov'
   require 'simplecov-cobertura'

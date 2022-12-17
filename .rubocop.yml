@@ -13,3 +13,8 @@ AllCops:
   SuggestExtensions: false
   Exclude:
     - bin/tapioca
+
+RSpec/FilePath:
+  CustomTransform:
+    OpenStory: openstory
+    OAuth: oauth
