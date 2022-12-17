@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
-require 'dry/system/container'
+require 'dry/system'
 
 require_relative 'core/application'
 

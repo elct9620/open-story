@@ -5,9 +5,12 @@ source 'https://rubygems.org'
 # Core
 gem 'dry-cli'
 gem 'dry-configurable'
+gem 'dry-events'
+gem 'dry-monitor'
 gem 'dry-system'
 
 # Utils
+gem 'bootsnap'
 gem 'oj'
 gem 'sorbet-runtime'
 
@@ -24,6 +27,8 @@ group :development do
   gem 'sorbet'
   gem 'spoom', require: false
   gem 'tapioca', require: false
+
+  gem 'pry'
 
   gem 'boxing'
 end

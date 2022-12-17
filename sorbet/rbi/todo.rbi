@@ -4,4 +4,6 @@
 
 # typed: false
 
+module ::Pry; end
+module Concurrent::Map; end
 module Gem::Ext::BuildError; end

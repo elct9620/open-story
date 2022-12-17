@@ -3,6 +3,7 @@
 require 'bundler/setup'
 require 'dry/cli'
 
+require 'openstory/core'
 require_relative 'cli/commands'
 
 module OpenStory
