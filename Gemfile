@@ -11,6 +11,7 @@ gem 'dry-system'
 
 # Utils
 gem 'bootsnap'
+gem 'dotenv'
 gem 'oj'
 gem 'sorbet-runtime'
 
