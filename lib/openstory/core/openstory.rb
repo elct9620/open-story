@@ -13,10 +13,14 @@ module OpenStory
 
     attr_accessor :app_class
 
-    delegate %i[env] => :app_class
+    delegate %i[env autoloader finalize!] => :app_class
 
     def application
       @application ||= app_class&.instance
+    end
+
+    def initialize!
+      finalize!
     end
 
     def root

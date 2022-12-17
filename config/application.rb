@@ -3,5 +3,6 @@
 require 'dotenv'
 Dotenv.load
 
+# :nodoc:
 class ClosedWorld < OpenStory::Application
 end
