@@ -9,6 +9,8 @@ variables:
   SORBET_ENABLED: 'yes'
   # Test
   RSPEC_JUNIT_REPORT: 'yes'
+  # Deploy
+  DEPLOY_STACK_FILE: stack.yml
 
 bundler-audit:
   rules:
@@ -36,3 +38,21 @@ trivy:
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
     - if: $CI_PIPELINE_SOURCE == 'schedule'
+
+deploy:
+  extends: .deploy
+  stage: deploy
+  variables:
+    SENTRY_ENVIRONMENT: production
+  environment:
+    name: production
+  resource_group: production
+  needs:
+    - docker
+  tags:
+    - tyc
+    - swarm
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'schedule'
+      when: never
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

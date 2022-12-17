@@ -1,0 +1,31 @@
+version: '3.8'
+
+x-application: &application
+  image: "${IMAGE_NAME}:${IMAGE_TAG}"
+  environment:
+    - SENTRY_DSN
+    - SENTRY_ENVIRONMENT
+    - PLURK_APP_KEY
+    - PLURK_APP_SECRET
+    - PLURK_ACCESS_TOKEN
+    - PLURK_SECRET_TOKEN
+
+services:
+  application:
+    <<: *application
+    networks:
+      - net
+    deploy:
+      placement:
+        constraints:
+          - node.role != manager
+      update_config:
+        parallelism: 2
+        delay: 3s
+        order: start-first
+        failure_action: rollback
+
+networks:
+  net:
+    driver: overlay
+    attachable: true
