@@ -42,5 +42,5 @@ RUN adduser -h ${APP_ROOT} -D -s /bin/nologin ruby ruby && \
 USER ruby
 WORKDIR ${APP_ROOT}
 
-ENTRYPOINT ["bin/observer"]
+ENTRYPOINT ["bin/openstory"]
 CMD ["server"]
