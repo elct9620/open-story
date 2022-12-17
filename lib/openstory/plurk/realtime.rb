@@ -32,6 +32,13 @@ module OpenStory
 
       def plurks
         poll
+          &.filter_map do |plurk|
+            case plurk['type']
+            in 'new_plurk' then Plurk.new(plurk)
+            in 'new_response' then Response.new(plurk['response'].merge(plurk: plurk['plurk']))
+            else nil
+            end
+          end
       end
 
       def poll

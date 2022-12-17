@@ -13,6 +13,7 @@ module OpenStory
     require_relative 'plurk/oauth'
     require_relative 'plurk/channel'
     require_relative 'plurk/user'
+    require_relative 'plurk/plurk'
     require_relative 'plurk/response'
     require_relative 'plurk/http'
     require_relative 'plurk/realtime'
