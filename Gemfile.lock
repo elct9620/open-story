@@ -55,6 +55,7 @@ GEM
       concurrent-ruby (~> 1.0)
       dry-core (~> 1.0, < 2)
     dry-inflector (1.0.0)
+    dry-logger (1.0.3)
     dry-logic (1.5.0)
       concurrent-ruby (~> 1.0)
       dry-core (~> 1.0, < 2)
@@ -207,6 +208,7 @@ DEPENDENCIES
   dry-cli
   dry-configurable
   dry-events
+  dry-logger
   dry-monitor
   dry-struct
   dry-system

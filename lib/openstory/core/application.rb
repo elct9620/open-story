@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'singleton'
+require 'logger'
 
 module OpenStory
   # The main application
@@ -15,12 +16,6 @@ module OpenStory
 
     include Singleton
 
-    use :env, inferrer: -> { ENV.fetch('OPENSTORY_ENV', :development).to_sym }
-    use :logging
-    use :monitoring
-    use :bootsnap
-    use :zeitwerk
-
     class << self
       def configure(finalize_config: true, &block)
         super(finalize_config:) do |config|
@@ -30,6 +25,29 @@ module OpenStory
           instance_exec(config, &block) if block
         end
       end
+    end
+
+    use :env, inferrer: -> { ENV.fetch('OPENSTORY_ENV', :development).to_sym }
+    use :monitoring
+    use :bootsnap
+    use :zeitwerk
+
+    setting :logger, reader: true
+    setting :log_levels, default: {
+      development: ::Logger::DEBUG,
+      test: ::Logger::DEBUG,
+      production: ::Logger::ERROR
+    }
+
+    after(:configure) do
+      unless registered?(:logger)
+        config.logger = OpenStory::Logger.new(
+          root.join("log/#{config.env}.log").realpath,
+          level: config.log_levels[config.env]
+        )
+        register(:logger, config.logger)
+      end
+      self
     end
   end
 end

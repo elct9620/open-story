@@ -21,6 +21,8 @@ class PlurkObserver < ApplicationObserver
     OpenStory::Plurk::Realtime.new(channel).each do |plurk|
       next if plurk.user_id == me.id
 
+      logger.info plurk.content, uid: plurk.user_id
+
       case plurk
       in OpenStory::Plurk::Plurk then on_plurk(plurk)
       in OpenStory::Plurk::Response then on_response(plurk)
@@ -43,8 +45,7 @@ class PlurkObserver < ApplicationObserver
 
   def reply_to(id, content)
     api.add_response OpenStory::Plurk::Response.new(
-      plurk_id: id,
-      content:
+      plurk_id: id, content:
     )
   end
 end

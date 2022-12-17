@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'forwardable'
+require 'dry/logger'
 
 # The open story service
 module OpenStory
@@ -13,7 +14,11 @@ module OpenStory
 
     attr_accessor :app_class
 
-    delegate %i[env autoloader finalize!] => :app_class
+    delegate %i[env logger autoloader finalize!] => :app_class
+
+    %i[production development test].each do |method|
+      define_method("#{method}?") { env == method }
+    end
 
     def application
       @application ||= app_class&.instance
