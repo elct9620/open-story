@@ -7,6 +7,7 @@ gem 'dry-cli'
 gem 'dry-configurable'
 gem 'dry-events'
 gem 'dry-monitor'
+gem 'dry-struct'
 gem 'dry-system'
 
 # Utils
