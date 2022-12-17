@@ -42,7 +42,7 @@ module OpenStory
     after(:configure) do
       unless registered?(:logger)
         config.logger = OpenStory::Logger.new(
-          root.join("log/#{config.env}.log").realpath,
+          root.join('log').realpath.join("#{config.env}.log"),
           level: config.log_levels[config.env]
         )
         register(:logger, config.logger)
