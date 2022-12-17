@@ -37,8 +37,7 @@ COPY . ${APP_ROOT}
 # Apply Execute Permission
 RUN adduser -h ${APP_ROOT} -D -s /bin/nologin ruby ruby && \
     chown ruby:ruby ${APP_ROOT} && \
-    chmod -R +r ${APP_ROOT} \
-    chmod +rw ${APP_ROOT}/log
+    chmod -R +r ${APP_ROOT}
 
 USER ruby
 WORKDIR ${APP_ROOT}
