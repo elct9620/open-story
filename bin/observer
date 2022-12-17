@@ -2,6 +2,8 @@
 # frozen_string_literal: true
 
 $LOAD_PATH.unshift("#{File.dirname(__dir__)}/lib")
-require_relative '../lib/openstory/cli'
+require 'openstory/cli'
+
+require_relative '../config/application'
 
 OpenStory::CLI.start
