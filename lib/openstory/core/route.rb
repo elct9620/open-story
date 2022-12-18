@@ -19,11 +19,11 @@ module OpenStory
     end
 
     def action_name
-      @action_name ||= OpenStory.autoloader.inflector.camelize("#{@to}_action", nil)
+      @action_name ||= "#{@to}_action".tr('/', '.')
     end
 
-    def action
-      Object.const_get(action_name)
+    def resolve
+      OpenStory.app_class.resolve(action_name)
     end
 
     def regexp

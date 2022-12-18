@@ -24,8 +24,7 @@ module OpenStory
         return unless route
 
         OpenStory.notifications.instrument('action.execute', action: route.action_name, content:) do
-          action = route.action.new
-          action.call
+          route.resolve.call
         end
       end
     end
