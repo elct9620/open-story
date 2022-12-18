@@ -45,32 +45,38 @@ module OpenStory
         Realtime.new(channel).each do |plurk|
           next if plurk.user_id == me.id
 
-          OpenStory.logger.info plurk.content, uid: plurk.user_id
-
           case plurk
-          in Plurk then on_plurk(plurk)
-          in Response then on_response(plurk)
+          when Plurk, Response
+            dispatch(plurk) if desired?(plurk)
+          else
+            OpenStory.logger.debug plurk
           end
         end
       end
 
-      def on_plurk(plurk)
-        return unless plurk.content.include?(KEYWORD)
-
-        reply_to(plurk.id, DEFAULT_RESPONSE)
+      def desired?(data)
+        (data&.plurk&.content || data.content).include?(KEYWORD)
       end
 
-      def on_response(response)
-        return if response.plurk.nil?
-        return unless response.plurk.content.include?(KEYWORD)
+      def dispatch(data)
+        route = OpenStory.application.router.match(data.content)
+        return unless route
 
-        reply_to(response.plurk_id, DEFAULT_RESPONSE)
+        OpenStory.notifications.instrument('action.execute', action: route.action_name, content: data.content,
+                                                             source: :plurk, uid: data.user_id) do
+          action = route.action.new
+
+          reply_id = data.is_a?(Plurk) ? data.id : data.plurk_id
+          reply_to(reply_id, action.call)
+        end
       end
 
       def reply_to(id, content)
         api.add_response Response.new(
           plurk_id: id, content:
         )
+      rescue RuntimeError => e
+        OpenStory.logger.warn e.message, action: 'plurk.response', id:
       end
     end
   end

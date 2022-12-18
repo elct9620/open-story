@@ -36,7 +36,7 @@ module OpenStory
             case plurk['type']
             in 'new_plurk' then Plurk.new(plurk)
             in 'new_response' then Response.new(plurk['response'].merge(plurk: plurk['plurk']))
-            else nil
+            else plurk
             end
           end
       end

@@ -24,6 +24,10 @@ module OpenStory
       @application ||= app_class&.instance
     end
 
+    def notifications
+      app_class[:notifications]
+    end
+
     def initialize!
       require root.join('config/router.rb')
       finalize!
