@@ -4,8 +4,7 @@ When('發送 {string}') do |message|
   route = OpenStory.application.router.match(message)
   next unless route
 
-  action = route.action.new
-  @response = action.call
+  @response = route.resolve.call
 end
 
 Then('我會看到以下其中一句話') do |expected|
