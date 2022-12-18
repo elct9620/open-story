@@ -2,9 +2,13 @@
 
 # :nodoc:
 class DefaultAction < OpenStory::Action
-  DEFAULT_RESPONSE = '世界受到了一些干涉，然而連意識的概念都不存在，什麼變化都沒有⋯⋯'
+  DEFAULT_RESPONSES = [
+    '你似乎跟這個世界產生了聯繫，然而這裡是完全「虛無」的狀態',
+    '「虛無」是指連「黑暗」的概念都不存在，什麼都做不了⋯⋯',
+    '「⋯⋯⋯⋯⋯⋯」'
+  ].freeze
 
   def call(*)
-    DEFAULT_RESPONSE
+    DEFAULT_RESPONSES.sample
   end
 end
