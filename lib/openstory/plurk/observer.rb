@@ -45,11 +45,9 @@ module OpenStory
         Realtime.new(channel).each do |plurk|
           case plurk
           when Plurk, Response
-            next if plurk.user_id == me.id
-            next unless allowed?(plurk.user_id)
-
-            dispatch(plurk) if desired?(plurk)
+            dispatch(plurk) if allowed?(plurk.user_id) && desired?(plurk)
           else
+            update_friends(plurk)
             OpenStory.logger.debug plurk
           end
         end
@@ -60,6 +58,7 @@ module OpenStory
       end
 
       def allowed?(id)
+        return false if id == me.id
         return true if config.allowlist.empty?
 
         config.allowlist.include?(id)
@@ -84,6 +83,15 @@ module OpenStory
         )
       rescue RuntimeError => e
         OpenStory.logger.warn e.message, action: 'plurk.response', id:
+      end
+
+      def update_friends(data)
+        count = data.dig('counts', 'req').to_i
+        return unless count.positive?
+
+        api.accept_all_friends
+      rescue RuntimeError => e
+        OpenStory.logger.warn e.message, action: 'plurk.accept_friends'
       end
     end
   end

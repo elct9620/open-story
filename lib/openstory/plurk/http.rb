@@ -4,6 +4,7 @@ require 'json'
 
 require_relative 'https/channel'
 require_relative 'https/user'
+require_relative 'https/alert'
 require_relative 'https/response'
 
 module OpenStory
@@ -13,6 +14,7 @@ module OpenStory
       include HTTPS::Channel
       include HTTPS::User
       include HTTPS::Response
+      include HTTPS::Alert
 
       def initialize(oauth)
         @oauth = oauth
