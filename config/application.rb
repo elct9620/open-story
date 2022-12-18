@@ -13,6 +13,8 @@ class ClosedWorld < OpenStory::Application
       c.app.secret = ENV.fetch('PLURK_APP_SECRET', nil)
       c.token = ENV.fetch('PLURK_ACCESS_TOKEN', nil)
       c.secret = ENV.fetch('PLURK_SECRET_TOKEN', nil)
+
+      c.allowlist = ENV.fetch('PLURK_ALLOWED_USER_IDS', nil)
     end
   end
 end

@@ -14,8 +14,8 @@ module OpenStory
       setting :token
       setting :secret
 
-      KEYWORD = '#OpenStory'
-      DEFAULT_RESPONSE = '世界受到了一些干涉，然而連意識的概念都不存在，什麼變化都沒有⋯⋯'
+      setting :keyword, default: '#OpenStory'
+      setting :allowlist, default: '', constructor: proc { |value| value.to_s.split(',').map(&:to_i) }
 
       def initialize(&block)
         instance_exec(config, &block) if block
@@ -44,6 +44,7 @@ module OpenStory
       def start
         Realtime.new(channel).each do |plurk|
           next if plurk.user_id == me.id
+          next unless allowed?(plurk.user_id)
 
           case plurk
           when Plurk, Response
@@ -55,7 +56,13 @@ module OpenStory
       end
 
       def desired?(data)
-        (data&.plurk&.content || data.content).include?(KEYWORD)
+        (data&.plurk&.content || data.content).include?(config.keyword)
+      end
+
+      def allowed?(id)
+        return true if config.allowlist.empty?
+
+        config.allowlist.include?(id)
       end
 
       def dispatch(data)
