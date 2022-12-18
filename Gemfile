@@ -13,6 +13,7 @@ gem 'dry-system'
 
 # Utils
 gem 'bootsnap'
+gem 'concurrent-ruby', '~> 1.0'
 gem 'dotenv'
 gem 'oj'
 gem 'sorbet-runtime'

@@ -5,6 +5,7 @@
 # typed: false
 
 module ::Pry; end
+module Concurrent::Hash; end
 module Concurrent::Map; end
 module Gem::Ext::BuildError; end
 module OpenStory::Types::Integer; end

@@ -203,6 +203,7 @@ DEPENDENCIES
   bootsnap
   boxing
   bundler-audit
+  concurrent-ruby (~> 1.0)
   cucumber
   dotenv
   dry-cli
