@@ -39,6 +39,8 @@ RUN adduser -h ${APP_ROOT} -D -s /bin/nologin ruby ruby && \
     chown ruby:ruby ${APP_ROOT} && \
     chmod -R +r ${APP_ROOT}
 
+ENV OPENSTORY_ENV=production
+
 USER ruby
 WORKDIR ${APP_ROOT}
 
