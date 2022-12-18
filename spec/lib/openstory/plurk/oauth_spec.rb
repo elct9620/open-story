@@ -12,7 +12,7 @@ RSpec.describe OpenStory::Plurk::OAuth do
 
     before do
       allow(Random).to receive(:rand).and_return(10_000)
-      allow(Time).to receive(:now).and_return(Time.parse('2022-12-17 20:30:00'))
+      allow(Time).to receive(:now).and_return(Time.parse('2022-12-17 20:30:00 +08:00'))
     end
 
     it { is_expected.to eq('mbqQ5pRhRnw4va8M0AHsvEyKhMs=') }
@@ -23,7 +23,7 @@ RSpec.describe OpenStory::Plurk::OAuth do
 
     before do
       allow(Random).to receive(:rand).and_return(10_000)
-      allow(Time).to receive(:now).and_return(Time.parse('2022-12-17 20:30:00'))
+      allow(Time).to receive(:now).and_return(Time.parse('2022-12-17 20:30:00 +08:00'))
     end
 
     it { is_expected.to be_a(Net::HTTP::Get) }
