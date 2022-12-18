@@ -11,6 +11,8 @@ module OpenStory
   module Plurk
     # HTTP client
     class HTTP
+      class RequestError < StandardError; end
+
       include HTTPS::Channel
       include HTTPS::User
       include HTTPS::Response
@@ -29,9 +31,10 @@ module OpenStory
         res = Net::HTTP.start(request.uri.host, request.uri.port, use_ssl: true) do |http|
           http.request request
         end
-        return JSON.parse(res.body) if res.is_a?(Net::HTTPSuccess)
+        data = JSON.parse(res.body)
+        return data if res.is_a?(Net::HTTPSuccess)
 
-        raise res.body
+        raise RequestError, data['error_text']
       end
     end
   end

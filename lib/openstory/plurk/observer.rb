@@ -62,7 +62,7 @@ module OpenStory
         api.add_response Response.new(
           plurk_id: id, content:
         )
-      rescue RuntimeError => e
+      rescue HTTP::RequestError => e
         OpenStory.logger.error e.message, action: 'plurk.response', id:
       end
 
@@ -71,7 +71,7 @@ module OpenStory
         return unless count.positive?
 
         api.accept_all_friends
-      rescue RuntimeError => e
+      rescue HTTP::RequestError => e
         OpenStory.logger.error e.message, action: 'plurk.accept_friends'
       end
     end
