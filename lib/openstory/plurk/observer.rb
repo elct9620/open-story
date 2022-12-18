@@ -32,7 +32,11 @@ module OpenStory
       end
 
       def desired?(event)
-        (event&.plurk&.content || event.content).include?(keyword)
+        content = case event
+                  when Plurk then event.content
+                  when Response then event.plurk.content
+                  end
+        content.include?(keyword)
       end
 
       def allowed?(id)
