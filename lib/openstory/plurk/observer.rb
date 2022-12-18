@@ -78,6 +78,8 @@ module OpenStory
       end
 
       def reply_to(id, content)
+        return if content.nil? || content == ''
+
         api.add_response Response.new(
           plurk_id: id, content:
         )
