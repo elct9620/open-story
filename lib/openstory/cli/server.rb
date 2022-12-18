@@ -14,7 +14,19 @@ module OpenStory
 
         raise 'observer not configured' unless OpenStory.observer
 
-        OpenStory.observer.start
+        OpenStory.observer.start do |content|
+          dispatch content
+        end
+      end
+
+      def dispatch(content)
+        route = OpenStory.application.router.match(content)
+        return unless route
+
+        OpenStory.notifications.instrument('action.execute', action: route.action_name, content:) do
+          action = route.action.new
+          action.call
+        end
       end
     end
   end

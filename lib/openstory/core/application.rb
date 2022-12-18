@@ -49,8 +49,7 @@ module OpenStory
 
       OpenStory.notifications.register_event('action.execute')
       OpenStory.notifications.subscribe('action.execute') do |event|
-        OpenStory.logger.info "process #{event[:content]} in #{event[:time]}ms", source: event[:source],
-                                                                                 uid: event[:uid]
+        OpenStory.logger.info "process #{event[:content]} in #{event[:time]}ms", action: event[:action]
       end
 
       self

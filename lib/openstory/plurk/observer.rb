@@ -20,20 +20,19 @@ module OpenStory
         @channel ||= api.create_channel
       end
 
-      def start
+      def start(&)
         Realtime.new(channel).each do |event|
           case event
           when Plurk, Response
-            dispatch(event) if allowed?(event.user_id) && desired?(event)
+            dispatch(event, &) if allowed?(event.user_id) && desired?(event)
           else
-            update_friends(event)
-            OpenStory.logger.debug event
+            accept_friends(event)
           end
         end
       end
 
-      def desired?(data)
-        (data&.plurk&.content || data.content).include?(keyword)
+      def desired?(event)
+        (event&.plurk&.content || event.content).include?(keyword)
       end
 
       def allowed?(id)
@@ -43,17 +42,14 @@ module OpenStory
         allowlist.include?(id)
       end
 
-      def dispatch(data)
-        route = OpenStory.application.router.match(data.content)
-        return unless route
+      def dispatch(data, &block)
+        return unless block
 
-        OpenStory.notifications.instrument('action.execute', action: route.action_name, content: data.content,
-                                                             source: :plurk, uid: data.user_id) do
-          action = route.action.new
+        res = yield(data.content)
+        return unless res
 
-          reply_id = data.is_a?(Plurk) ? data.id : data.plurk_id
-          reply_to(reply_id, action.call)
-        end
+        reply_id = data.is_a?(Plurk) ? data.id : data.plurk_id
+        reply_to(reply_id, res)
       end
 
       def reply_to(id, content)
