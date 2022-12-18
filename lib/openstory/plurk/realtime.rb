@@ -19,7 +19,7 @@ module OpenStory
       def each(&block)
         return enum_for(:each) unless block
 
-        event_stream&.each(&block) until @stopped
+        event_stream&.each(&block) until stopped?
       end
 
       def stopped?
@@ -35,7 +35,7 @@ module OpenStory
           &.filter_map do |event|
             case event['type']
             in 'new_plurk' then Plurk.new(event)
-            in 'new_response' then Response.new(event['response'].merge(plurk: event['plurk']))
+            in 'new_response' then Response.new(event['response'].merge(plurk: event['plurk']).compact)
             else event
             end
           end
@@ -43,9 +43,11 @@ module OpenStory
 
       def poll
         body = Net::HTTP.get(@channel.uri(offset: @offset))
-        res = JSON.parse(body[COMET_SCRIPT_REGEX, 1])
+        res = JSON.parse(body[COMET_SCRIPT_REGEX, 1].to_s)
         @offset = res['new_offset']
         res['data']
+      rescue JSON::ParserError
+        []
       end
     end
   end
