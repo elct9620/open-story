@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-require 'bundler/setup'
-
+require 'dry/system'
 require 'openstory/core'
 
 module OpenStory
@@ -18,5 +17,6 @@ module OpenStory
     require_relative 'plurk/http'
     require_relative 'plurk/realtime'
     require_relative 'plurk/observer'
+    require_relative 'plurk/provider'
   end
 end

@@ -14,7 +14,7 @@ module OpenStory
 
     attr_accessor :app_class
 
-    delegate %i[env observer logger autoloader finalize!] => :app_class
+    delegate %i[env logger autoloader finalize!] => :app_class
 
     %i[production development test].each do |method|
       define_method("#{method}?") { env == method }
@@ -24,12 +24,17 @@ module OpenStory
       @application ||= app_class&.instance
     end
 
+    def observer
+      app_class[:observer]
+    end
+
     def notifications
       app_class[:notifications]
     end
 
     def initialize!
       require root.join('config/router.rb')
+      app_class.configure unless app_class.configured?
       finalize!
     end
 

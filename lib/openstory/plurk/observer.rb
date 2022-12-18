@@ -4,33 +4,12 @@ module OpenStory
   module Plurk
     # The observer to publish subscribed events
     class Observer
-      include Dry::Configurable
+      attr_reader :api, :keyword, :allowlist
 
-      setting :app do
-        setting :key
-        setting :secret
-      end
-
-      setting :token
-      setting :secret
-
-      setting :keyword, default: '#OpenStory'
-      setting :allowlist, default: '', constructor: proc { |value| value.to_s.split(',').map(&:to_i) }
-
-      def initialize(&block)
-        instance_exec(config, &block) if block
-      end
-
-      def token
-        @token ||= Token.new(token: config.token, secret: config.secret)
-      end
-
-      def oauth
-        @oauth ||= OAuth.new(key: config.app.key, secret: config.app.secret, token:)
-      end
-
-      def api
-        @api ||= HTTP.new(oauth)
+      def initialize(api, keyword: '', allowlist: [])
+        @api = api
+        @keyword = keyword
+        @allowlist = allowlist
       end
 
       def me
@@ -54,14 +33,14 @@ module OpenStory
       end
 
       def desired?(data)
-        (data&.plurk&.content || data.content).include?(config.keyword)
+        (data&.plurk&.content || data.content).include?(keyword)
       end
 
       def allowed?(id)
         return false if id == me.id
-        return true if config.allowlist.empty?
+        return true if allowlist.empty?
 
-        config.allowlist.include?(id)
+        allowlist.include?(id)
       end
 
       def dispatch(data)

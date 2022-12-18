@@ -31,8 +31,6 @@ module OpenStory
     use :bootsnap
     use :zeitwerk
 
-    setting :observer, reader: true
-
     setting :logger, reader: true
     setting :log_levels, default: {
       development: ::Logger::DEBUG,
