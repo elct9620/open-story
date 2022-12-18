@@ -82,7 +82,7 @@ module OpenStory
           plurk_id: id, content:
         )
       rescue RuntimeError => e
-        OpenStory.logger.warn e.message, action: 'plurk.response', id:
+        OpenStory.logger.error e.message, action: 'plurk.response', id:
       end
 
       def update_friends(data)
@@ -91,7 +91,7 @@ module OpenStory
 
         api.accept_all_friends
       rescue RuntimeError => e
-        OpenStory.logger.warn e.message, action: 'plurk.accept_friends'
+        OpenStory.logger.error e.message, action: 'plurk.accept_friends'
       end
     end
   end
