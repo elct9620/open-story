@@ -19,6 +19,7 @@ module OpenStory
       def configure(finalize_config: true, &block)
         super(finalize_config:) do |config|
           config.root = OpenStory.root
+          config.component_dirs.add 'app/actions'
 
           instance_exec(config, &block) if block
         end
