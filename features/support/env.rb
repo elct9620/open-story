@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+$LOAD_PATH.unshift("#{File.dirname(__dir__)}/lib")
+
+require_relative '../../config/application'
+
 if ENV.fetch('COVERAGE', false) || ENV.fetch('CI', false)
   require 'simplecov'
   require 'simplecov-cobertura'
@@ -10,3 +14,5 @@ if ENV.fetch('COVERAGE', false) || ENV.fetch('CI', false)
     add_filter 'vendor'
   end
 end
+
+OpenStory.initialize!
