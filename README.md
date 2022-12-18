@@ -1,6 +1,8 @@
 Open Story
 ===
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/f24d2f3e0ef478868f96/maintainability)](https://codeclimate.com/github/elct9620/open-story/maintainability)
+
 「開放故事」是一個實驗性的專案，源於[程式的脈絡](https://blog.aotoki.me/posts/2022/12/16/write-better-program-by-add-the-context/)這篇文章所提及如果將程式仔細加入脈絡（Context）的話會有類似
 小說的感覺，那麼基於小說的方式用程式描述世界觀，並讓使用者互動是否可行，進而產生了這個專案。
 
