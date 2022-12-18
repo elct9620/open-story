@@ -43,11 +43,11 @@ module OpenStory
 
       def start
         Realtime.new(channel).each do |plurk|
-          next if plurk.user_id == me.id
-          next unless allowed?(plurk.user_id)
-
           case plurk
           when Plurk, Response
+            next if plurk.user_id == me.id
+            next unless allowed?(plurk.user_id)
+
             dispatch(plurk) if desired?(plurk)
           else
             OpenStory.logger.debug plurk
