@@ -25,6 +25,7 @@ module OpenStory
     end
 
     def initialize!
+      require root.join('config/router.rb')
       finalize!
     end
 

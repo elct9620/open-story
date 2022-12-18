@@ -49,5 +49,9 @@ module OpenStory
       end
       self
     end
+
+    def router
+      @router ||= OpenStory::Router.new
+    end
   end
 end
