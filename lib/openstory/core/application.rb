@@ -10,7 +10,6 @@ module OpenStory
       def inherited(base)
         super
         OpenStory.app_class = base
-        base.configure unless base.configured?
       end
     end
 
@@ -20,7 +19,6 @@ module OpenStory
       def configure(finalize_config: true, &block)
         super(finalize_config:) do |config|
           config.root = OpenStory.root
-          config.component_dirs.add 'app/observers'
 
           instance_exec(config, &block) if block
         end
@@ -31,6 +29,8 @@ module OpenStory
     use :monitoring
     use :bootsnap
     use :zeitwerk
+
+    setting :observer, reader: true
 
     setting :logger, reader: true
     setting :log_levels, default: {

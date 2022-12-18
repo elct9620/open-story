@@ -6,16 +6,15 @@ module OpenStory
     class Server < Dry::CLI::Command
       desc 'start the server'
 
-      argument :observer, default: 'plurk', desc: 'The observer to serve'
-
-      def call(observer:)
+      def call(*)
         $stdout.sync = true
 
         OpenStory.logger.add_backend(stream: $stdout)
         OpenStory.logger.info('Starting server...')
-        class_name = OpenStory.autoloader.inflector.camelize("#{observer}_observer", nil)
-        observer = Kernel.const_get(class_name).new
-        observer.start
+
+        raise 'observer not configured' unless OpenStory.observer
+
+        OpenStory.observer.start
       end
     end
   end

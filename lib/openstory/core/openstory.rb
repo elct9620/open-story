@@ -14,7 +14,7 @@ module OpenStory
 
     attr_accessor :app_class
 
-    delegate %i[env logger autoloader finalize!] => :app_class
+    delegate %i[env observer logger autoloader finalize!] => :app_class
 
     %i[production development test].each do |method|
       define_method("#{method}?") { env == method }

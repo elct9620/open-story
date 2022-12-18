@@ -17,5 +17,6 @@ module OpenStory
     require_relative 'plurk/response'
     require_relative 'plurk/http'
     require_relative 'plurk/realtime'
+    require_relative 'plurk/observer'
   end
 end
