@@ -46,6 +46,8 @@ group :test do
   gem 'simplecov', require: false
   gem 'simplecov-cobertura', require: false
 
+  gem 'webmock'
+
   gem 'rubocop'
   gem 'rubocop-performance', require: false
   gem 'rubocop-rspec', require: false

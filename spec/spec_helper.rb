@@ -18,6 +18,8 @@
 
 $LOAD_PATH.unshift("#{File.dirname(__dir__)}/lib")
 
+require 'webmock/rspec'
+
 if ENV.fetch('COVERAGE', false) || ENV.fetch('CI', false)
   require 'simplecov'
   require 'simplecov-cobertura'
