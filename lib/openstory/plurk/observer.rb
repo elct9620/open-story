@@ -21,13 +21,13 @@ module OpenStory
       end
 
       def start
-        Realtime.new(channel).each do |plurk|
-          case plurk
+        Realtime.new(channel).each do |event|
+          case event
           when Plurk, Response
-            dispatch(plurk) if allowed?(plurk.user_id) && desired?(plurk)
+            dispatch(event) if allowed?(event.user_id) && desired?(event)
           else
-            update_friends(plurk)
-            OpenStory.logger.debug plurk
+            update_friends(event)
+            OpenStory.logger.debug event
           end
         end
       end

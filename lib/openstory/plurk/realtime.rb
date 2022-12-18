@@ -19,7 +19,7 @@ module OpenStory
       def each(&block)
         return enum_for(:each) unless block
 
-        plurks&.each(&block) until @stopped
+        event_stream&.each(&block) until @stopped
       end
 
       def stopped?
@@ -30,13 +30,13 @@ module OpenStory
         @stopped = true
       end
 
-      def plurks
+      def event_stream
         poll
-          &.filter_map do |plurk|
-            case plurk['type']
-            in 'new_plurk' then Plurk.new(plurk)
-            in 'new_response' then Response.new(plurk['response'].merge(plurk: plurk['plurk']))
-            else plurk
+          &.filter_map do |event|
+            case event['type']
+            in 'new_plurk' then Plurk.new(event)
+            in 'new_response' then Response.new(event['response'].merge(plurk: event['plurk']))
+            else event
             end
           end
       end
