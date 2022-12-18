@@ -62,7 +62,7 @@ module OpenStory
         OpenStory.logger.error e.message, action: 'plurk.response', id:
       end
 
-      def update_friends(data)
+      def accept_friends(data)
         count = data.dig('counts', 'req').to_i
         return unless count.positive?
 
