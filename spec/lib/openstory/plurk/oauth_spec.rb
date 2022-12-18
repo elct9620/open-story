@@ -18,6 +18,18 @@ RSpec.describe OpenStory::Plurk::OAuth do
     it { is_expected.to eq('mbqQ5pRhRnw4va8M0AHsvEyKhMs=') }
   end
 
+  describe '#build' do
+    subject { oauth.build(:get, 'http://plurk.com/API', params: {}) }
+
+    before do
+      allow(Random).to receive(:rand).and_return(10_000)
+      allow(Time).to receive(:now).and_return(Time.parse('2022-12-17 20:30:00'))
+    end
+
+    it { is_expected.to be_a(Net::HTTP::Get) }
+    it { is_expected.to have_attributes(path: include('oauth_signature=uZhBD8EJOhYIAyCLNpbplr6EXbo')) }
+  end
+
   describe '#params' do
     it { is_expected.to have_attributes(params: include(oauth_consumer_key: 'APP_KEY')) }
     it { is_expected.to have_attributes(params: include(oauth_nonce: be_a(String))) }
