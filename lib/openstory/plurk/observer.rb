@@ -3,6 +3,8 @@
 module OpenStory
   module Plurk
     # The observer to publish subscribed events
+    #
+    # @note should move to app/bridges
     class Observer
       attr_reader :api, :keyword, :allowlist
 
@@ -20,8 +22,12 @@ module OpenStory
         @channel ||= api.create_channel
       end
 
+      def realtime
+        @realtime ||= Realtime.new(channel)
+      end
+
       def start(&)
-        Realtime.new(channel).each do |event|
+        realtime.each do |event|
           case event
           when Plurk, Response
             dispatch(event, &) if allowed?(event.user_id) && desired?(event)
