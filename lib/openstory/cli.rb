@@ -16,6 +16,7 @@ module OpenStory
     # start the command line
     def start
       OpenStory.initialize!
+      OpenStory.finalize!
       Dry::CLI.new(OpenStory::CLI::Commands).call
     end
   end
