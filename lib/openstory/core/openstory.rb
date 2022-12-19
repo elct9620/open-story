@@ -33,8 +33,9 @@ module OpenStory
     end
 
     def initialize!
-      require root.join('config/router.rb')
+      root.join('config/initializers').glob('*.rb').each { |path| require path }
       app_class.configure unless app_class.configured?
+      require root.join('config/router.rb')
       finalize!
     end
 

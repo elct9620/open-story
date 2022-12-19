@@ -16,6 +16,8 @@ module OpenStory
 
         OpenStory.observer.start do |content|
           dispatch content
+        rescue e
+          Sentry.capture_exception(e)
         end
       end
 
