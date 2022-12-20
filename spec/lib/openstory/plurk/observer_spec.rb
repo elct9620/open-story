@@ -12,7 +12,7 @@ RSpec.describe OpenStory::Plurk::Observer do
   let(:api) { OpenStory::Plurk::HTTP.new(oauth) }
 
   describe '#next' do
-    subject { observer.next }
+    subject(:fetch_next) { observer.next }
 
     let(:realtime) { instance_spy(OpenStory::Plurk::Realtime) }
 
@@ -21,6 +21,7 @@ RSpec.describe OpenStory::Plurk::Observer do
       allow(Time).to receive(:now).and_return(Time.parse('2022-12-17 20:30:00 +08:00'))
       allow(OpenStory::Plurk::Realtime).to receive(:new).and_return(realtime)
       allow(realtime).to receive(:next).and_return(event)
+      allow(api).to receive(:accept_all_friends).and_call_original
 
       stub_api_create_channel
       stub_api_me
@@ -51,12 +52,19 @@ RSpec.describe OpenStory::Plurk::Observer do
       it { is_expected.to include('a response') }
     end
 
-    context 'when new notificatios received' do
-      let(:event) do
-        { counts: { req: 1 } }
-      end
+    context 'when new notification received' do
+      let(:event) { {} }
 
       it { is_expected.to be_nil }
+    end
+
+    context 'when new notification is friend request' do
+      let(:event) { { 'counts' => { 'req' => 1 } } }
+
+      it 'accepts all friends' do
+        fetch_next
+        expect(api).to have_received(:accept_all_friends)
+      end
     end
   end
 end
