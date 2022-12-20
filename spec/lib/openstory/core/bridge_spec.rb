@@ -6,7 +6,12 @@ RSpec.describe OpenStory::Bridge do # rubocop:disable RSpec/FilePath
   subject(:bridge) { described_class.new }
 
   describe '#start' do
-    let(:io) { StringIO.new }
+    let(:observer) do
+      Class.new do
+        def next; end
+        def reply_to(id, content); end
+      end.new
+    end
 
     before do
       app = Class.new(OpenStory::Application)
@@ -14,14 +19,12 @@ RSpec.describe OpenStory::Bridge do # rubocop:disable RSpec/FilePath
       app.configure
       app.instance.router.default(to: 'bridge')
 
-      observer = Class.new { def start; end }.new
-      allow(observer).to receive(:start) do |&block|
-        io.write block.call('PING')
-      end
+      allow(observer).to receive(:next).and_invoke(-> { [1, 'PING'] }, -> { raise StopIteration })
+      allow(observer).to receive(:reply_to)
       bridge.register(:raw, observer)
       bridge.start
     end
 
-    it { expect(io).to have_attributes(string: 'PONG') }
+    it { expect(observer).to have_received(:reply_to).with(1, 'PONG') }
   end
 end

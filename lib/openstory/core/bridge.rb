@@ -16,12 +16,22 @@ module OpenStory
 
     def bootstrap(observer)
       Thread.new do
-        observer.start do |content|
-          dispatch content
+        loop do
+          process(observer)
+        rescue StopIteration
+          break
         rescue StandardError => e
           Sentry.capture_exception(e)
         end
       end
+    end
+
+    def process(observer)
+      id, content = observer.next
+      return unless id && content
+
+      res = dispatch content
+      observer.reply_to id, res
     end
 
     def dispatch(content)

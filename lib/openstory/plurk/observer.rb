@@ -26,14 +26,13 @@ module OpenStory
         @realtime ||= Realtime.new(channel)
       end
 
-      def start(&)
-        realtime.each do |event|
-          case event
-          when Plurk, Response
-            dispatch(event, &) if allowed?(event.user_id) && desired?(event)
-          else
-            accept_friends(event)
-          end
+      def next
+        event = realtime.next
+        case event
+        when Plurk, Response
+          dispatch(event) if allowed?(event.user_id) && desired?(event)
+        else
+          accept_friends(event)
         end
       end
 
@@ -52,14 +51,9 @@ module OpenStory
         allowlist.include?(id)
       end
 
-      def dispatch(data, &block)
-        return unless block
-
-        res = yield(data.content)
-        return unless res
-
-        reply_id = data.is_a?(Plurk) ? data.id : data.plurk_id
-        reply_to(reply_id, res)
+      def dispatch(event)
+        reply_id = event.is_a?(Plurk) ? event.id : event.plurk_id
+        [reply_id, event.content]
       end
 
       def reply_to(id, content)
@@ -77,6 +71,7 @@ module OpenStory
         return unless count.positive?
 
         api.accept_all_friends
+        nil
       rescue HTTP::RequestError => e
         OpenStory.logger.error e.message, action: 'plurk.accept_friends'
       end
