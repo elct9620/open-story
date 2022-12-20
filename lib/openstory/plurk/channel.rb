@@ -8,8 +8,13 @@ module OpenStory
       attribute :name, Dry::Types['string']
       attribute :server, Dry::Types['string']
 
-      def uri(offset: 0)
-        URI(server.gsub(OFFSET_REGEX, "offset=#{offset}"))
+      def uri(offset: nil)
+        server_with_offset = if offset
+                               server.gsub(OFFSET_REGEX, "offset=#{offset}")
+                             else
+                               server
+                             end
+        URI(server_with_offset)
       end
     end
   end

@@ -12,14 +12,16 @@ module OpenStory
 
       def initialize(channel)
         @channel = channel
-        @offset = 0
+        @offset = nil
         @stopped = false
       end
 
-      def each(&block)
-        return enum_for(:each) unless block
+      def each(&)
+        event_stream.each(&)
+      end
 
-        event_stream&.each(&block) until stopped?
+      def next
+        each.next
       end
 
       def stopped?
@@ -31,17 +33,26 @@ module OpenStory
       end
 
       def event_stream
-        poll
-          &.filter_map do |event|
-            case event['type']
-            in 'new_plurk' then Plurk.new(event)
-            in 'new_response' then Response.new(event['response'].merge(plurk: event['plurk']).compact)
-            else event
-            end
+        @event_stream ||= Enumerator.new do |y|
+          loop do
+            break if stopped?
+
+            stream
+              &.filter_map { |data| convert(data) }
+              &.each { |event| y.yield event }
           end
+        end.lazy
       end
 
-      def poll
+      def convert(event)
+        case event['type']
+        in 'new_plurk' then Plurk.new(event)
+        in 'new_response' then Response.new(event['response'].merge(plurk: event['plurk']).compact)
+        else event
+        end
+      end
+
+      def stream
         body = Net::HTTP.get(@channel.uri(offset: @offset))
         res = JSON.parse(body[COMET_SCRIPT_REGEX, 1].to_s)
         @offset = res['new_offset']
