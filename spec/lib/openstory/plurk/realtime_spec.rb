@@ -21,10 +21,9 @@ RSpec.describe OpenStory::Plurk::Realtime do
     let(:data) { [] }
 
     before do
-      allow(realtime).to receive(:stopped?).and_return(false, true) # rubocop:disable RSpec/SubjectStub
-
       stub_request(:get, 'https://comet03.plurk.com/comet/1235515351741/?channel=generic-4-f733d8522327edf87b4d1651e6395a6cca0807a0&offset=0')
-        .to_return(status: 200, body: "CometChannel.scriptCallback({\"data\": #{data.to_json}})")
+        .to_return(status: 200, body: "CometChannel.scriptCallback({\"data\": #{data.to_json}})").then
+        .to_raise(StopIteration)
     end
 
     it { is_expected.to be_empty }
