@@ -23,6 +23,14 @@ module OpenStory
       @routes.add(route)
     end
 
+    def size
+      @routes.size
+    end
+
+    def include?(pattern)
+      @routes.find { |route| route.eql?(pattern) } != nil
+    end
+
     def match(action)
       @routes.find { |route| route.match?(action) } || @default
     end

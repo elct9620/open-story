@@ -5,9 +5,16 @@ require 'concurrent/set'
 module OpenStory
   # the action route
   class Route
+    attr_reader :regexp
+
     def initialize(pattern, to:)
       @pattern = pattern
+      @regexp = Regexp.new(pattern)
       @to = to
+    end
+
+    def eql?(other)
+      hash == other.hash
     end
 
     def hash
@@ -24,10 +31,6 @@ module OpenStory
 
     def resolve
       OpenStory.app_class.resolve(action_name)
-    end
-
-    def regexp
-      @regexp ||= Regexp.new(@pattern)
     end
   end
 end
