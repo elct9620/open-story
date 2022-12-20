@@ -58,5 +58,9 @@ module OpenStory
     def router
       @router ||= OpenStory::Router.new
     end
+
+    def bridge
+      @bridge ||= OpenStory::Bridge.new
+    end
   end
 end

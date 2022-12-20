@@ -14,20 +14,9 @@ module OpenStory
 
         raise 'observer not configured' unless OpenStory.observer
 
-        OpenStory.observer.start do |content|
-          dispatch content
-        rescue e
-          Sentry.capture_exception(e)
-        end
-      end
-
-      def dispatch(content)
-        route = OpenStory.application.router.match(content)
-        return unless route
-
-        OpenStory.notifications.instrument('action.execute', action: route.action_name, content:) do
-          route.resolve.call
-        end
+        bridge = OpenStory.application.bridge
+        bridge.register(:default, OpenStory.observer)
+        bridge.start
       end
     end
   end

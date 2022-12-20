@@ -7,6 +7,7 @@
 module ::Pry; end
 module Concurrent::Map; end
 module Concurrent::Set; end
+module Dry::Container::Mixin; end
 module Gem::Ext::BuildError; end
 module OpenStory::Types::Integer; end
 module OpenStory::Types::String; end

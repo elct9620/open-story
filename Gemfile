@@ -5,6 +5,7 @@ source 'https://rubygems.org'
 # Core
 gem 'dry-cli'
 gem 'dry-configurable'
+gem 'dry-container'
 gem 'dry-events'
 gem 'dry-logger'
 gem 'dry-monitor'
