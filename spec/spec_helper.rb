@@ -29,7 +29,8 @@ if ENV.fetch('COVERAGE', false) || ENV.fetch('CI', false)
   SimpleCov.start do
     add_group 'Actions', 'app/actions'
     add_group 'OpenStory', 'lib/openstory'
-    add_group 'Plurk', 'lib/openstory/plurk'
+    add_group 'OS.Plurk', 'lib/openstory/plurk'
+    add_group 'OS.Bridge', 'lib/openstory/bridge'
     add_filter %w[config vendor spec features]
   end
 end

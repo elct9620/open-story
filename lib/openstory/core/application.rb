@@ -3,6 +3,8 @@
 require 'singleton'
 require 'logger'
 
+require 'openstory/bridge'
+
 module OpenStory
   # The main application
   class Application < Dry::System::Container
@@ -60,7 +62,7 @@ module OpenStory
     end
 
     def bridge
-      @bridge ||= OpenStory::Bridge.new
+      @bridge ||= OpenStory::Bridge::Server.new
     end
   end
 end

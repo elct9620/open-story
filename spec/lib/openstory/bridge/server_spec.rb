@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'openstory/core'
+require 'openstory/bridge'
 
-RSpec.describe OpenStory::Bridge do # rubocop:disable RSpec/FilePath
+RSpec.describe OpenStory::Bridge::Server do
   subject(:bridge) { described_class.new }
 
   describe '#start' do
