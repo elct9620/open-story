@@ -52,8 +52,12 @@ module OpenStory
       end
 
       def dispatch(event)
-        reply_id = event.is_a?(Plurk) ? event.id : event.plurk_id
-        [reply_id, event.content]
+        id = event.is_a?(Plurk) ? event.id : event.plurk_id
+        {
+          id:, source: :plurk,
+          user_id: event.user_id,
+          content: event.content
+        }
       end
 
       def reply_to(id, content)

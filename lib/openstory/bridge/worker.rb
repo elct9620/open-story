@@ -11,18 +11,18 @@ module OpenStory
       end
 
       def next
-        id, content = @observer.next
-        return unless id && content
+        env = @observer.next
+        return unless env
 
-        dispatch id, content
+        dispatch env
       end
 
-      def dispatch(id, content)
-        route = @router.match(content)
+      def dispatch(env)
+        route = @router.match(env[:content])
         return unless route
 
-        @notifications.instrument('action.execute', action: route.action_name, content:) do
-          @observer.reply_to id, route.resolve.call
+        @notifications.instrument('action.execute', action: route.action_name, **env) do
+          @observer.reply_to env[:id], route.resolve.call
         end
       end
     end

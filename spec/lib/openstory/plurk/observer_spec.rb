@@ -34,8 +34,10 @@ RSpec.describe OpenStory::Plurk::Observer do
         OpenStory::Plurk::Plurk.new(id: 123, user_id: 1, content: 'a plurk', content_raw: '')
       end
 
-      it { is_expected.to include(123) }
-      it { is_expected.to include('a plurk') }
+      it { is_expected.to include(id: 123) }
+      it { is_expected.to include(content: 'a plurk') }
+      it { is_expected.to include(source: :plurk) }
+      it { is_expected.to include(user_id: 1) }
     end
 
     context 'when new response received' do
@@ -44,12 +46,14 @@ RSpec.describe OpenStory::Plurk::Observer do
           user_id: 1,
           plurk_id: 99,
           content: 'a response',
-          plurk: OpenStory::Plurk::Plurk.new(id: 99, user_id: 1, content: 'a plurk', content_raw: '')
+          plurk: OpenStory::Plurk::Plurk.new(id: 99, user_id: 68, content: 'a plurk', content_raw: '')
         )
       end
 
-      it { is_expected.to include(99) }
-      it { is_expected.to include('a response') }
+      it { is_expected.to include(id: 99) }
+      it { is_expected.to include(content: 'a response') }
+      it { is_expected.to include(source: :plurk) }
+      it { is_expected.to include(user_id: 1) }
     end
 
     context 'when new notification received' do

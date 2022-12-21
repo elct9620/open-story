@@ -51,7 +51,7 @@ module OpenStory
 
       OpenStory.notifications.register_event('action.execute')
       OpenStory.notifications.subscribe('action.execute') do |event|
-        OpenStory.logger.info "process #{event[:content]} in #{event[:time]}ms", action: event[:action]
+        OpenStory.logger.info "Completed in #{event[:time]}ms", **event.to_h.except(:time)
       end
 
       self

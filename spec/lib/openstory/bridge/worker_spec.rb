@@ -16,7 +16,7 @@ RSpec.describe OpenStory::Bridge::Worker do
       container.register('bridge_action', Class.new { def call(*) = 'PONG' }.new)
       router.default(to: 'bridge')
 
-      allow(observer).to receive(:next).and_return([1, 'PING'])
+      allow(observer).to receive(:next).and_return({ id: 1, content: 'PING' })
       allow(observer).to receive(:reply_to)
       worker.next
     end
