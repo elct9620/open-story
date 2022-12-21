@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 $LOAD_PATH.unshift("#{File.dirname(__dir__)}/lib")
+require 'bundler/setup'
 
 require 'dotenv'
 Dotenv.load
