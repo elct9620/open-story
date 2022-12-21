@@ -11,6 +11,39 @@ RSpec.describe OpenStory::Plurk::Observer do
   let(:token) { OpenStory::Plurk::Token.new(token: 'USER_TOKEN', secret: 'USER_SECRET') }
   let(:api) { OpenStory::Plurk::HTTP.new(oauth) }
 
+  before do
+    stub_api_create_channel
+    stub_api_me
+  end
+
+  describe '#allowed?' do
+    subject { observer.allowed?(1) }
+
+    it { is_expected.to be_truthy }
+
+    context 'when allow list is configured' do
+      let(:observer) { described_class.new(api, allowlist: [1]) }
+
+      it { is_expected.to be_truthy }
+    end
+  end
+
+  describe '#reply_to' do
+    it 'calls response api' do
+      request = stub_api_add_response
+      observer.reply_to(1, 'PONG')
+      expect(request).to have_been_requested
+    end
+
+    context 'when content is empty' do
+      it 'does not call response api' do
+        request = stub_api_add_response
+        observer.reply_to(1, '')
+        expect(request).not_to have_been_requested
+      end
+    end
+  end
+
   describe '#next' do
     subject(:fetch_next) { observer.next }
 
@@ -23,9 +56,6 @@ RSpec.describe OpenStory::Plurk::Observer do
       allow(realtime).to receive(:next).and_return(event)
       allow(api).to receive(:accept_all_friends).and_call_original
 
-      stub_api_create_channel
-      stub_api_me
-      stub_api_add_response
       stub_api_add_all_friends
     end
 
