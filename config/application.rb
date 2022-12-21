@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+$LOAD_PATH.unshift("#{File.dirname(__dir__)}/lib")
+
 require 'dotenv'
 Dotenv.load
 

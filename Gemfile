@@ -17,6 +17,7 @@ gem 'bootsnap'
 gem 'concurrent-ruby', '~> 1.0'
 gem 'dotenv'
 gem 'oj'
+gem 'rake'
 gem 'sorbet-runtime'
 
 # Monitoring

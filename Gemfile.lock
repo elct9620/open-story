@@ -111,6 +111,7 @@ GEM
       method_source (~> 1.0)
     public_suffix (5.0.1)
     rainbow (3.1.1)
+    rake (13.0.6)
     rbi (0.0.16)
       ast
       parser (>= 2.6.4.0)
@@ -229,6 +230,7 @@ DEPENDENCIES
   oj
   overcommit
   pry
+  rake
   rspec
   rspec_junit_formatter
   rubocop

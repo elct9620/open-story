@@ -1,9 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-$LOAD_PATH.unshift("#{File.dirname(__dir__)}/lib")
-require 'openstory/cli'
-
 require_relative '../config/application'
+require 'openstory/cli'
 
 OpenStory::CLI.start
