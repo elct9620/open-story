@@ -27,11 +27,16 @@ if ENV.fetch('COVERAGE', false) || ENV.fetch('CI', false)
   SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter if ENV.fetch('GITLAB_CI', false)
 
   SimpleCov.start do
-    add_group 'Actions', 'app/actions'
-    add_group 'OpenStory', 'lib/openstory'
-    add_group 'OS.Plurk', 'lib/openstory/plurk'
-    add_group 'OS.Bridge', 'lib/openstory/bridge'
     add_filter %w[config vendor spec features]
+    if defined?(Cucumber)
+      add_filter 'lib/openstory'
+      add_group 'Actions', 'app/actions'
+    else
+      add_filter 'app'
+      add_group 'OpenStory', 'lib/openstory'
+      add_group 'OS.Plurk', 'lib/openstory/plurk'
+      add_group 'OS.Bridge', 'lib/openstory/bridge'
+    end
   end
 end
 
