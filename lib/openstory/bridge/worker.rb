@@ -4,9 +4,10 @@ module OpenStory
   module Bridge
     # Worker handle the observer to exhcnage message
     class Worker
-      def initialize(router, observer)
+      def initialize(router, observer, notifications)
         @router = router
         @observer = observer
+        @notifications = notifications
       end
 
       def next
@@ -20,7 +21,7 @@ module OpenStory
         route = @router.match(content)
         return unless route
 
-        OpenStory.notifications.instrument('action.execute', action: route.action_name, content:) do
+        @notifications.instrument('action.execute', action: route.action_name, content:) do
           @observer.reply_to id, route.resolve.call
         end
       end

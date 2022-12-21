@@ -7,7 +7,8 @@ module OpenStory
   class Route
     attr_reader :regexp
 
-    def initialize(pattern, to:)
+    def initialize(pattern, to:, container:)
+      @container = container
       @pattern = pattern
       @regexp = Regexp.new(pattern)
       @to = to
@@ -30,7 +31,7 @@ module OpenStory
     end
 
     def resolve
-      OpenStory.app_class.resolve(action_name)
+      @container.resolve(action_name)
     end
   end
 end

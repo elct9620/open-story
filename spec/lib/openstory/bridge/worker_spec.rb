@@ -4,16 +4,16 @@ require 'openstory/bridge'
 require 'openstory/bridge/mock_observer'
 
 RSpec.describe OpenStory::Bridge::Worker do
-  subject(:worker) { described_class.new(router, observer) }
+  subject(:worker) { described_class.new(router, observer, notifications) }
 
-  let(:router) { OpenStory::Router.new }
+  let(:container) { Dry::Container.new }
+  let(:router) { OpenStory::Router.new(container) }
   let(:observer) { instance_double(OpenStory::Bridge::MockObserver) }
+  let(:notifications) { Dry::Monitor::Notifications.new(:test) }
 
   describe '#next' do
     before do
-      app = Class.new(OpenStory::Application)
-      app.register('bridge_action', Class.new { def call(*) = 'PONG' }.new)
-      app.configure
+      container.register('bridge_action', Class.new { def call(*) = 'PONG' }.new)
       router.default(to: 'bridge')
 
       allow(observer).to receive(:next).and_return([1, 'PING'])

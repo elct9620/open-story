@@ -58,11 +58,15 @@ module OpenStory
     end
 
     def router
-      @router ||= OpenStory::Router.new
+      @router ||= OpenStory::Router.new(OpenStory.app_class)
     end
 
     def bridge
-      @bridge ||= OpenStory::Bridge::Server.new
+      @bridge ||= OpenStory::Bridge::Server.new(
+        router,
+        OpenStory.logger,
+        OpenStory.notifications
+      )
     end
   end
 end

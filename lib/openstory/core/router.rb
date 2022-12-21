@@ -5,7 +5,10 @@ require 'concurrent/set'
 module OpenStory
   # The action router
   class Router
-    def initialize
+    attr_reader :container
+
+    def initialize(container)
+      @container = container
       @routes = ::Concurrent::Set.new
       @default = nil
     end
@@ -15,11 +18,11 @@ module OpenStory
     end
 
     def default(to:)
-      @default = Route.new(/.*/, to:)
+      @default = Route.new(/.*/, to:, container:)
     end
 
     def action(pattern, to:)
-      route = Route.new(pattern, to:)
+      route = Route.new(pattern, to:, container:)
       @routes.add(route)
     end
 

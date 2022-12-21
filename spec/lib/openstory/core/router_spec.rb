@@ -3,7 +3,9 @@
 require 'openstory/core'
 
 RSpec.describe OpenStory::Router do # rubocop:disable RSpec/FilePath
-  subject(:router) { described_class.new }
+  subject(:router) { described_class.new(container) }
+
+  let(:container) { Dry::Container.new }
 
   before do
     router.draw do
