@@ -16,31 +16,13 @@ module OpenStory
       end
 
       def bootstrap(observer)
+        worker = Worker.new(OpenStory.application.router, observer)
         Thread.new do
           loop do
-            process(observer)
-          rescue StopIteration
-            break
-          rescue StandardError => e
+            worker.next
+          rescue RuntimeError => e
             Sentry.capture_exception(e)
           end
-        end
-      end
-
-      def process(observer)
-        id, content = observer.next
-        return unless id && content
-
-        res = dispatch content
-        observer.reply_to id, res
-      end
-
-      def dispatch(content)
-        route = OpenStory.application.router.match(content)
-        return unless route
-
-        OpenStory.notifications.instrument('action.execute', action: route.action_name, content:) do
-          route.resolve.call
         end
       end
     end
