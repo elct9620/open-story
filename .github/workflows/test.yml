@@ -65,8 +65,8 @@ jobs:
   report-coverage:
     runs-on: ubuntu-latest
     needs:
-      - simplecov-resultset-rspec
-      - simplecov-resultset-cucumber
+      - rspec
+      - cucumber
     steps:
     - uses: actions/checkout@v3
     - name: Set up Ruby
