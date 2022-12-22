@@ -35,7 +35,10 @@ module OpenStory
     end
 
     def match(action)
-      @routes.find { |route| route.match?(action) } || @default
+      @routes.each do |r|
+        return [r, Regexp.last_match] if r.regexp.match(action)
+      end
+      [@default, nil]
     end
   end
 end

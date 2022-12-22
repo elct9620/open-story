@@ -18,9 +18,10 @@ module OpenStory
       end
 
       def dispatch(env)
-        route = @router.match(env[:content])
+        route, matched = @router.match(env[:content])
         return unless route
 
+        env[:params] = matched&.named_captures || {}
         @notifications.instrument('action.execute', action: route.action_name, **env) do
           @observer.reply_to env[:id], route.resolve.call(env)
         end

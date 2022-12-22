@@ -22,10 +22,6 @@ module OpenStory
       regexp.hash
     end
 
-    def match?(action)
-      regexp.match?(action)
-    end
-
     def action_name
       @action_name ||= "#{@to}_action".tr('/', '.')
     end
