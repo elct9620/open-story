@@ -1,10 +1,17 @@
 # frozen_string_literal: true
 
 When('發送 {string}') do |message|
-  route = OpenStory.application.router.match(message)
+  route, matched = OpenStory.application.router.match(message)
   next unless route
 
-  @response = route.resolve.call
+  env = {
+    params: matched&.named_captures || {},
+    source: :cucumber,
+    user_id: 1,
+    id: 1
+  }
+
+  @response = route.resolve.call(env)
 end
 
 Then('我會看到以下其中一句話') do |expected|
