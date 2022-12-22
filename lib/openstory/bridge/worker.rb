@@ -22,7 +22,7 @@ module OpenStory
         return unless route
 
         @notifications.instrument('action.execute', action: route.action_name, **env) do
-          @observer.reply_to env[:id], route.resolve.call
+          @observer.reply_to env[:id], route.resolve.call(env)
         end
       end
     end

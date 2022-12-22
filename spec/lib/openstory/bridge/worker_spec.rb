@@ -13,7 +13,7 @@ RSpec.describe OpenStory::Bridge::Worker do
 
   describe '#next' do
     before do
-      container.register('bridge_action', Class.new { def call(*) = 'PONG' }.new)
+      container.register('bridge_action', Class.new(OpenStory::Action) { def handle(*) = 'PONG' }.new)
       router.default(to: 'bridge')
 
       allow(observer).to receive(:next).and_return({ id: 1, content: 'PING' })

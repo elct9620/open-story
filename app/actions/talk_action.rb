@@ -8,7 +8,7 @@ class TalkAction < OpenStory::Action
     '開始懷疑這個模糊的感覺是什麼，沒有任何反應'
   ].freeze
 
-  def call(*)
+  def handle(*)
     DEFAULT_RESPONSES.sample
   end
 end
