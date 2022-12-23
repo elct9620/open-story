@@ -3,6 +3,7 @@
 source 'https://rubygems.org'
 
 # Core
+gem 'activesupport'
 gem 'dry-cli'
 gem 'dry-configurable'
 gem 'dry-container'

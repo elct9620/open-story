@@ -11,10 +11,11 @@ module OpenStory
 
       attr_reader :router, :logger, :notifications
 
-      def initialize(router, logger, notifications)
+      def initialize(router, logger, notifications, reloader = nil)
         @router = router
         @logger = logger
         @notifications = notifications
+        @reloader = reloader
       end
 
       def start
@@ -27,7 +28,7 @@ module OpenStory
         worker = Worker.new(router, observer, notifications)
         Thread.new do
           loop do
-            worker.next
+            worker.next { @reloader&.call }
           rescue RuntimeError => e
             @logger.error e
             Sentry.capture_exception(e)

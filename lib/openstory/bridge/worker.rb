@@ -10,10 +10,11 @@ module OpenStory
         @notifications = notifications
       end
 
-      def next
+      def next(&)
         env = @observer.next
         return unless env
 
+        yield if defined?(yield)
         dispatch env
       end
 

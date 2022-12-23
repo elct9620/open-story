@@ -32,6 +32,7 @@ module OpenStory
     use :monitoring
     use :bootsnap
     use :zeitwerk
+    use :reloading
 
     setting :logger, reader: true
     setting :log_levels, default: {
@@ -65,7 +66,8 @@ module OpenStory
       @bridge ||= OpenStory::Bridge::Server.new(
         router,
         OpenStory.logger,
-        OpenStory.notifications
+        OpenStory.notifications,
+        OpenStory.app_class[:reloader]
       )
     end
   end
