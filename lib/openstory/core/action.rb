@@ -6,7 +6,7 @@ module OpenStory
     attr_reader :params
 
     def call(env)
-      @params = env[:params]
+      @params = OpenStory::Bridge::Parameter.new(env)
       handle(env)
     end
 
