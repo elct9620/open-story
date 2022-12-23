@@ -8,7 +8,7 @@ RSpec.describe OpenStory::Route do # rubocop:disable RSpec/FilePath
   let(:container) { Dry::Container.new }
 
   describe '#resolve' do
-    let(:action_class) { Class.new(OpenStory::Action) }
+    let(:action_class) { Class.new }
 
     before do
       container.register('talk_action', action_class)
