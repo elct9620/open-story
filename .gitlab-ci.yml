@@ -11,6 +11,7 @@ variables:
   RSPEC_JUNIT_REPORT: 'yes'
   # Deploy
   DEPLOY_STACK_FILE: stack.yml
+  DEPLOY_NAME: open-story-$CI_ENVIRONMENT_SLUG
 
 bundler-audit:
   rules:
